@@ -91,7 +91,7 @@ class MobileNetv2(BaseModel):
         out = self.layers(out)
         out = F.relu(self.bn2(self.conv2(out)))
         # NOTE: change pooling kernel_size 7 -> 4 for CIFAR10
-        out = F.avg_pool2d(out, 4)
+        out = F.adaptive_avg_pool2d(out, (1, 1)) # robust for all image sizes
         out = out.view(out.size(0), -1)
         out = self.linear(out)
         return out
