@@ -27,6 +27,7 @@ class Block(nn.Module):
         self.conv1, self.bn1 = ModuleInjection.make_prunable(self.conv1, self.bn1)
         self.conv2 = nn.Conv2d(planes, planes, kernel_size=3, stride=stride, padding=1, groups=planes, bias=False)
         self.bn2 = nn.BatchNorm2d(planes)
+#         why not make conv2 bn2 prunable
         self.conv3 = nn.Conv2d(planes, out_planes, kernel_size=1, stride=1, padding=0, bias=False)
         self.bn3 = nn.BatchNorm2d(out_planes)
         self.conv3, self.bn3 = ModuleInjection.make_prunable(self.conv3, self.bn3)
@@ -38,6 +39,7 @@ class Block(nn.Module):
             conv_module, bn_module = ModuleInjection.make_prunable(conv_module, bn_module)
             if hasattr(bn_module, 'is_imp'):
                 bn_module.is_imp = True
+#                 what is is_imp
             self.shortcut = nn.Sequential(
                 conv_module,
                 bn_module
@@ -69,6 +71,7 @@ class MobileNetv2(BaseModel):
         self.conv1, self.bn1 = ModuleInjection.make_prunable(self.conv1, self.bn1)
         if hasattr(self.bn1, 'is_imp'):
             self.bn1.is_imp = True
+#             is imp
         self.layers = self._make_layers(in_planes=32)
         self.conv2 = nn.Conv2d(320, 1280, kernel_size=1, stride=1, padding=0, bias=False)
         self.bn2 = nn.BatchNorm2d(1280)
